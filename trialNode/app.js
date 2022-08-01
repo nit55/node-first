@@ -7,7 +7,9 @@ const NitinRoute = require("./routes/nitin");
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get("/", (req, res, next) => {
-  res.send("<html><head><title>dhdhd</title></head><body> Found</body></html>");
+  res.send(
+    "<html><head><title>dhdhd</title></head><body>dfvuisdi</body></html>"
+  );
 });
 app.use(KunduRoute);
 app.use(NitinRoute);
