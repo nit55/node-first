@@ -135,7 +135,7 @@ class Product {
   }
 
   static findByUserId(userId) {
-    console.log(userId);
+    // console.log(userId);
     const db = getDB();
     return db
       .collection("products")

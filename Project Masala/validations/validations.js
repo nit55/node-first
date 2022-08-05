@@ -56,11 +56,91 @@ exports.createProductSchema = [
         errorMessage: "The product price must be a valid number",
       },
     },
+    weight: {
+      trim: true,
+      not: true,
+      isEmpty: true,
+      // matches: {
+      //   options: [/\d{2,3} ?gm|kg$/],
+      //   errorMessage: "enter like 50gm or 50kg",
+      // },
+      custom: {
+        options: (value, { req }) => {
+          let weightFormat = value.split(" ")[1].toLowerCase();
+          let weightNumber = value.split(" ")[0];
+          if (
+            weightFormat == "kg" &&
+            parseInt(weightNumber) >= 1 &&
+            parseInt(weightNumber) <= 25
+          ) {
+            return true;
+          }
+          if (
+            weightFormat == "gm" &&
+            parseInt(weightNumber) >= 50 &&
+            parseInt(weightNumber) <= 999
+          ) {
+            return true;
+          }
+          // if (
+          //   (weightFormat == "gm" && weightNumber < 50) ||
+          //   weightNumber > 1000
+          // ) {
+          //   return false;
+          // }
+          console.log(weightFormat, parseInt(weightNumber));
+          return false;
+        },
+        errorMessage:
+          "enter a valid weight, for grams less than 1000 and kg less than 25",
+      },
+    },
+    details: {
+      trim: true,
+      not: true,
+      isEmpty: true,
+      errorMessage: "should not be empty",
+    },
+    availableQuantity: {
+      trim: true,
+      not: true,
+      isEmpty: true,
+      errorMessage: "should not be empty",
+      isNumeric: {
+        errorMessage: "must be a valid number",
+      },
+    },
+    imageUrl: {
+      trim: true,
+      not: true,
+      isEmpty: true,
+      errorMessage: "should not be empty",
+    },
+    brand: {
+      trim: true,
+      not: true,
+      isEmpty: true,
+      errorMessage: "should not be empty",
+    },
   }),
 ];
 
 exports.userSignupSchema = [
   checkSchema({
+    name: {
+      trim: true,
+      not: true,
+      isEmpty: true,
+      errorMessage: "should not be empty",
+      isLength: {
+        errorMessage: "should be a minimum of 3 characters",
+        options: { min: 3 },
+      },
+      matches: {
+        options: [/^[a-z,A-Z ]+$/],
+        errorMessage: "Please enter alphabets only",
+      },
+    },
     email: {
       trim: true,
       isEmail: true,
@@ -80,6 +160,15 @@ exports.userSignupSchema = [
       },
       errorMessage: "Please enter a valid email Id",
     },
+    password: {
+      trim: true,
+      isAlphanumeric: true,
+      isLength: {
+        errorMessage: "should be a minimum of 5 ",
+        options: { min: 5 },
+      },
+      errorMessage: "Please enter a valid password",
+    },
   }),
 ];
 
@@ -94,7 +183,7 @@ exports.userLoginSchema = [
       trim: true,
       isLength: {
         errorMessage: "should be a minimum of 5 ",
-        options: { max: 5 },
+        options: { min: 5 },
       },
       errorMessage: "Please enter a valid password",
     },
